@@ -1,0 +1,81 @@
+### ============================================================
+### Tests de l'API "Projets & Tâches" — extension REST Client
+### Installe l'extension "REST Client" (humao.rest-client) dans VS Code.
+### Puis clique sur "Send Request" qui apparaît au-dessus de chaque bloc.
+###
+### Rappel : depuis le dernier correctif, chaque utilisateur ne voit et ne
+### modifie que SES propres projets/tâches. Toutes les routes ci-dessous,
+### sauf inscription/connexion, exigent désormais le token.
+### ============================================================
+
+@baseUrl = http://localhost:3000
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwiaWF0IjoxNzgyNjAyMzk4LCJleHAiOjE3ODI2MDU5OTh9.oVcEnQzB_iZ_ZQqZ-vqFwWrWyQR54MdBcZdRKjkCcNY
+
+
+### ---------- AUTHENTIFICATION ----------
+
+### Inscription
+POST {{baseUrl}}/api/auth/register
+Content-Type: application/json
+
+{
+  "username": "TestVSCode",
+  "email": "test-vscode@example.com",
+  "password": "motdepasse123"
+}
+
+### Connexion
+# -> copie le "token" reçu dans la réponse et colle-le dans @token en haut du fichier
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "test-vscode@example.com",
+  "password": "motdepasse123"
+}
+
+
+### ---------- PROJETS ----------
+
+### Lister MES projets (protégé)
+GET {{baseUrl}}/api/projects
+Authorization: {{token}}
+
+### Voir un de MES projets, avec ses tâches (protégé — remplace l'id à la fin)
+GET {{baseUrl}}/api/projects/1
+Authorization: {{token}}
+
+### Créer un projet (protégé)
+POST {{baseUrl}}/api/projects
+Content-Type: application/json
+Authorization: {{token}}
+
+{
+  "name": "Projet test VS Code",
+  "description": "Créé depuis l'extension REST Client"
+}
+
+
+### ---------- TÂCHES ----------
+
+### Ajouter une tâche à UN DE MES projets (protégé — remplace l'id du projet à la fin)
+POST {{baseUrl}}/api/projects/1/tasks
+Content-Type: application/json
+Authorization: {{token}}
+
+{
+  "title": "Tâche créée depuis VS Code"
+}
+
+### Lister les tâches de MES projets (protégé)
+GET {{baseUrl}}/api/tasks
+Authorization: {{token}}
+
+### Marquer une de MES tâches comme terminée (protégé — remplace l'id de la tâche à la fin)
+PUT {{baseUrl}}/api/tasks/1
+Content-Type: application/json
+Authorization: {{token}}
+
+{
+  "status": "terminée"
+}
