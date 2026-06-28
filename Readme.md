@@ -133,6 +133,7 @@ Au-delà, le serveur répond `429 Too Many Requests`.
 Trois façons, au choix :
 
 1. **`index.html`** — interface web complète (inscription, connexion, création de projets/tâches, journal des requêtes). Ouvre-le directement dans un navigateur pendant que le serveur tourne.
+<video src="DEMO_API.mp4" controls="controls" style="max-width: 100%;"></video>
 2. **`api-tests.http`** — fichier de requêtes prêtes à l'emploi pour l'extension **REST Client** de VS Code.
 3. **Postman** — importe les routes manuellement, ou récupère le token via `/api/auth/login` puis renseigne-le dans l'en-tête `Authorization` des autres requêtes.
 
